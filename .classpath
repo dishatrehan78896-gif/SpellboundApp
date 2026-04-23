@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-21">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/openjfx-21.0.10_windows-x64_bin-sdk/javafx-sdk-21.0.10/lib/javafx.base.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/openjfx-21.0.10_windows-x64_bin-sdk/javafx-sdk-21.0.10/lib/javafx.controls.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/openjfx-21.0.10_windows-x64_bin-sdk/javafx-sdk-21.0.10/lib/javafx.fxml.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/openjfx-21.0.10_windows-x64_bin-sdk/javafx-sdk-21.0.10/lib/javafx.graphics.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/openjfx-21.0.10_windows-x64_bin-sdk/javafx-sdk-21.0.10/lib/javafx.media.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/openjfx-21.0.10_windows-x64_bin-sdk/javafx-sdk-21.0.10/lib/javafx.swing.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/openjfx-21.0.10_windows-x64_bin-sdk/javafx-sdk-21.0.10/lib/javafx.web.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/openjfx-21.0.10_windows-x64_bin-sdk/javafx-sdk-21.0.10/lib/javafx-swt.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/waffle-jna.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/vavr-match.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/vavr.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/uom-lib-common.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/unit-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/txw2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/spanish-pos-dict.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/slf4j-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/simpleclient_tracer_otel_agent.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/simpleclient_tracer_otel.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/simpleclient_tracer_common.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/simpleclient_httpserver.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/simpleclient_hotspot.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/simpleclient_guava.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/simpleclient_common.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/simpleclient.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/segment.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/resilience4j-micrometer.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/resilience4j-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/resilience4j-circuitbreaker.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/reactor-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/reactive-streams.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/proto-google-common-protos.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/protobuf-java.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/portuguese-pos-dict.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/perfmark-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/opentelemetry-semconv.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/opentelemetry-context.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/opentelemetry-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/openregex.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/opennlp-tools.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/opennlp-tokenize-models.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/opennlp-postag-models.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/opennlp-chunk-models.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/netty-transport-native-unix-common.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/netty-transport.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/netty-resolver.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/netty-handler.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/netty-common.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/netty-codec.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/netty-buffer.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/mybatis.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/morphology-el.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/morfologik-ukrainian-lt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/morfologik-tools.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/morfologik-stemming.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/morfologik-speller.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/morfologik-fsa-builders.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/morfologik-fsa.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/morfologik-crh-lt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/micrometer-registry-prometheus.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/micrometer-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/mariadb-java-client.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/lucene-gosen-ipadic.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/lucene-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/lucene-backward-codecs.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/logback-ecs-encoder.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/logback-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/logback-classic.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/listenablefuture.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/linguistics.grammardb.spell.languagetool.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/lettuce-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/LatencyUtils.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/languagetool-tools.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/languagetool-gui-commons.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/languagetool-ga-dicts.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/languagetool-core-tests.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/languagetool-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/language-detector.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jwordsplitter.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/junit.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jsr305.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jspecify.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jsonic.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jna-platform.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jna.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jcommander.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jcl-over-slf4j.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jaxb-runtime.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jaxb-impl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jaxb-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jaxb-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/javax.annotation-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/javax.activation-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/java-diff-utils.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jakarta.xml.bind-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jakarta.activation-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jakarta.activation.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jackson-databind.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jackson-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/jackson-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/j2objc-annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/istack-commons-runtime.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/indriya.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/icu4j.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/hunspell.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/hppc.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/HdrHistogram.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/hanlp.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/hamcrest-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/gson.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/grpc-util.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/grpc-stub.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/grpc-protobuf-lite.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/grpc-protobuf.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/grpc-netty-shaded.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/grpc-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/grpc-context.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/grpc-api.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/german-pos-dict.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/french-pos-dict.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/fastutil-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/failureaccess.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/error_prone_annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/english-pos-dict.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/ecs-logging-core.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/dutch-pos-dict.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/commons-validator.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/commons-text.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/commons-pool2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/commons-logging.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/commons-lang3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/commons-io.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/commons-digester.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/commons-collections4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/commons-codec.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/commons-cli.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/checker-qual.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/catalan-pos-dict.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/caffeine.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/bytes.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/bcrypt.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/asturian-pos-dict.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/annotations.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/angus-activation.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/LanguageTool-stable/LanguageTool-6.6/libs/aho-corasick-double-array-trie.jar"/>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/pdfbox-3.0.7.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/fontbox-3.0.7.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/commons-logging-1.3.6-bin/commons-logging-1.3.6/findsecbugs-plugin-1.14.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/pdfbox-io-3.0.7.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/disha/Downloads/commons-logging-1.2.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

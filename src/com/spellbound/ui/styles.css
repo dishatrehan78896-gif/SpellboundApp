@@ -1,0 +1,118 @@
+/* --- GLOBAL DEFAULTS --- */
+.root {
+    -fx-font-family: "Segoe UI", System;
+}
+
+/* --- DASHBOARD SIDEBAR (Glassmorphism) --- */
+.sidebar {
+    /* Gradients work best with hex or standard web colors in FX */
+    -fx-background-color: linear-gradient(to bottom, #5131a9, #7c4dff);
+    -fx-background-radius: 0 40 40 0;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 5, 0);
+    -fx-border-color: rgba(255, 255, 255, 0.1);
+    -fx-border-width: 0 1 0 0;
+}
+
+.logo-text {
+    -fx-font-weight: 900;
+    -fx-font-size: 22px;
+    -fx-fill: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 10, 0, 0, 0);
+}
+
+/* --- NAVIGATION BUTTONS --- */
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(255, 255, 255, 0.8);
+    -fx-background-radius: 15;
+    -fx-padding: 12 20;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-text-fill: white;
+}
+
+/* --- FILE CARDS (The Recent List) --- */
+.file-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-padding: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 4);
+    -fx-border-color: transparent;
+    -fx-border-width: 2;
+    -fx-cursor: hand;
+}
+
+.file-card:hover {
+    -fx-border-color: linear-gradient(to right, #5131a9, #f98d72);
+    -fx-effect: dropshadow(gaussian, rgba(81, 49, 169, 0.2), 15, 0, 0, 8);
+}
+
+/* --- SEARCH BAR --- */
+.search-bar {
+    -fx-background-radius: 25;
+    -fx-border-radius: 25;
+    -fx-border-color: #e0e0e0;
+    -fx-background-color: white;
+    /* Inner shadow fix for FX */
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 5, 0, 0, 1);
+}
+
+/* --- WORKPLACE EDITOR STYLING --- */
+.text-area {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+    -fx-prompt-text-fill: #bbbbbb;
+}
+
+/* This targets the actual scrollable part of the editor */
+.text-area .content {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+}
+
+/* Scrollbar Styling for a "Clean" Laptop look */
+.scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 8;
+}
+
+.scroll-bar:vertical .thumb {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 10;
+}
+
+/* Magic Check Button Pulse Effect (Optional) */
+.magic-button {
+    -fx-background-color: linear-gradient(to right, #5131a9, #f98d72);
+    -fx-text-fill: white;
+    -fx-background-radius: 22;
+    -fx-font-weight: 900;
+}
+
+.magic-button:hover {
+    -fx-brightness: 1.1;
+}
+.text-area .content {
+    -fx-background-color: white;
+}
+.text-area {
+    -fx-font-family: "Consolas", "Monospaced";
+    -fx-line-spacing: 5px; /* Adds breathing room between lines */
+}
+/* Makes the text editor look like a page too */
+.text-area {
+    -fx-background-color: white;
+    -fx-border-color: #d1d1d1;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 20, 0, 0, 10);
+}
+
+.text-area .content {
+    -fx-background-color: white;
+    -fx-padding: 50; /* Large margins like a real document */
+}
