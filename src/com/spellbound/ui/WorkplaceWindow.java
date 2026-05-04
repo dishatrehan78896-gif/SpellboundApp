@@ -4,7 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -14,120 +13,178 @@ import com.spellbound.logic.CorrectionEngine;
 
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 public class WorkplaceWindow {
 
-    @FXML private TextArea editor;
+    // Change: Using TextFlow for highlighting support without external JARs
+    @FXML private TextFlow editorFlow; 
+    @FXML private TextArea editor; // Keep hidden for raw input if needed, or remove if FXML is fully updated
     @FXML private VBox editorContainer;
     @FXML private Label fileNameLabel;
     @FXML private Label wordCountLabel; 
     @FXML private Label charCountLabel;
-    
     @FXML private ScrollPane pdfScrollPane;
     @FXML private StackPane contentStack;
-
-    // --- NEW DESIGN ARCHITECT CONTROLS ---
     @FXML private ComboBox<String> fontPicker;
     @FXML private ComboBox<String> marginPicker;
     @FXML private TextField headingField;
     @FXML private CheckBox pageNumbersToggle;
-    @FXML private CheckBox tableMagicToggle;
+    @FXML private ScrollPane magicOverlay;
 
     private CorrectionEngine engine = new CorrectionEngine();
     private File currentFile;
+    private String rawTextContent = ""; // Stores the unformatted text
 
-    /**
-     * Helper class to transport user design choices
-     */
     public static class DocSettings {
         public float margin = 72f;
         public String font = "Helvetica";
         public boolean showPageNumbers = true;
         public String[] highlights = new String[0];
-        public boolean convertToTables = false;
+    }
+
+    
+
+    @FXML
+    private void handleGoBack(ActionEvent event) {
+        Stage stage = (Stage) editorFlow.getScene().getWindow();
+        HomeWindow.show(stage, "user@spellbound.com"); 
     }
 
     @FXML
-    public void initialize() {
-        if (editor != null) {
-            editor.textProperty().addListener((obs, oldVal, newVal) -> updateCounts(newVal));
-            editor.setStyle("-fx-font-family: 'Consolas', 'Monospaced'; -fx-font-size: 13px;");
-        }
+    private void handleNewDocument() {
+        this.currentFile = null;
+        this.rawTextContent = "";
+        fileNameLabel.setText("NEW UNTITLED DOCUMENT");
+        if (editorFlow != null) editorFlow.getChildren().clear();
+        toggleMode(false); 
+    }
+
+    /**
+     * UPDATED: Magic Check now builds the TextFlow with GREEN highlights for corrections.
+     */
+    @FXML
+    private void handleCheck() {
+        // 1. Capture the text from the editor
+        String input = (editor != null && !editor.getText().isEmpty()) ? editor.getText() : rawTextContent;
         
-        // Default UI Selections
-        if (fontPicker != null) fontPicker.getSelectionModel().select("Helvetica");
-        if (marginPicker != null) marginPicker.getSelectionModel().select("Standard (1.0 inch)");
+        if (input == null || input.trim().isEmpty()) {
+            System.out.println("DEBUG: No text found in editor or rawTextContent");
+            return;
+        }
+
+        // 2. Run the correction engine
+        String corrected = engine.performMagicCheck(input);
+        this.rawTextContent = corrected; 
+
+        Platform.runLater(() -> {
+            // 3. Build the Green Highlight View
+            editorFlow.getChildren().clear();
+            String[] words = corrected.split("\\s+"); // Split by any whitespace
+            
+            for (String word : words) {
+                Text textNode = new Text(word + " ");
+                textNode.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 15px;");
+
+                String clean = word.replaceAll("[.,!?;]", "");
+                if (engine.isACorrectedWord(clean)) {
+                    textNode.setFill(Color.web("#00c853")); // GREEN
+                    textNode.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 15px; -fx-font-weight: bold;");
+                } else {
+                    textNode.setFill(Color.BLACK);
+                }
+                editorFlow.getChildren().add(textNode);
+            }
+
+            // 4. THE UI SWAP (Crucial Part)
+            // Hide the TextArea
+            editor.setVisible(false);
+            editor.setManaged(false);
+            
+            // Show the Magic ScrollPane and TextFlow
+            magicOverlay.setVisible(true);
+            magicOverlay.setManaged(true);
+            magicOverlay.setOpacity(1.0); // Ensure it's fully opaque
+            
+            // Ensure the PDF view is hidden
+            pdfScrollPane.setVisible(false);
+            pdfScrollPane.setManaged(false);
+            
+            // Show the editor container
+            editorContainer.setVisible(true);
+            editorContainer.setManaged(true);
+
+            updateCounts(corrected);
+        });
+    }
+    private void toggleMode(boolean isPdf) {
+        Platform.runLater(() -> {
+            pdfScrollPane.setVisible(isPdf);
+            pdfScrollPane.setManaged(isPdf);
+            editorContainer.setVisible(!isPdf);
+            editorContainer.setManaged(!isPdf);
+
+            if (!isPdf && editorFlow != null) {
+                editorFlow.requestFocus();
+            }
+            contentStack.requestLayout(); 
+        });
+    }
+
+    @FXML
+    private void handleSave() {
+    	((VBox) pdfScrollPane.getContent()).getChildren().clear();
+    	System.gc(); // Suggest garbage collection to release file handles
+        if (rawTextContent.isEmpty()) return;
+
+        DocSettings userChoices = getDocSettings();
+        try {
+            String baseDir = (currentFile != null) ? currentFile.getParent() : System.getProperty("user.home") + "/Documents";
+            String name = (currentFile != null) ? currentFile.getName().replace(".pdf", "") : "Untitled_Enchantment";
+            File saveTarget = new File(baseDir, name + "_Architected.pdf");
+
+            // The Engine handles the BUTTER YELLOW highlighting internally in this call
+            engine.exportCorrectedPDF(rawTextContent, name, saveTarget, userChoices);
+            
+            fileNameLabel.setText("✨ ARCHITECTED: " + saveTarget.getName());
+            toggleMode(true); 
+            renderPDFToImage(saveTarget);
+        } catch (Exception e) { e.printStackTrace(); }
     }
 
     private DocSettings getDocSettings() {
         DocSettings settings = new DocSettings();
-        
-        // 1. Map Margins
         String marginVal = marginPicker.getValue();
         if (marginVal != null) {
-            if (marginVal.contains("Narrow")) settings.margin = 36f; // 0.5 inch
-            else if (marginVal.contains("Wide")) settings.margin = 108f; // 1.5 inch
-            else settings.margin = 72f; // 1.0 inch
+            if (marginVal.contains("Narrow")) settings.margin = 36f;
+            else if (marginVal.contains("Wide")) settings.margin = 108f;
+            else settings.margin = 72f;
         }
-
-        // 2. Map Font
         settings.font = fontPicker.getValue() != null ? fontPicker.getValue() : "Helvetica";
-
-        // 3. Map Headings
         if (headingField.getText() != null && !headingField.getText().isEmpty()) {
             settings.highlights = headingField.getText().split(",");
         }
-
-        // 4. Map Toggles
         settings.showPageNumbers = pageNumbersToggle.isSelected();
-        settings.convertToTables = tableMagicToggle.isSelected();
-
         return settings;
     }
-    @FXML
-    private void handleSave() {
-        if (currentFile == null || editor.getText().isEmpty()) return;
-
-        DocSettings userChoices = getDocSettings(); // Get the UI choices
-
-        try {
-            String originalName = currentFile.getName();
-            File saveTarget = new File(currentFile.getParent(), originalName.replace(".pdf", "_Architected.pdf"));
-
-            // PASS THE 4th ARGUMENT HERE
-            engine.exportCorrectedPDF(editor.getText(), originalName, saveTarget, userChoices);
-
-            fileNameLabel.setText("✨ ARCHITECTED: " + saveTarget.getName());
-            toggleMode(true); 
-            renderPDFToImage(saveTarget);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    // --- EXISTING LOGIC BELOW (UNTOUCHED FOR STABILITY) ---
 
     public void setupWorkplace(File file, Stage stage) {
-        if (file == null) return;
+        if (file == null) {
+            handleNewDocument();
+            return;
+        }
         this.currentFile = file;
         fileNameLabel.setText(file.getName().toUpperCase());
-        
         if (file.getName().toLowerCase().endsWith(".pdf")) {
             toggleMode(true); 
             renderPDFToImage(file);
@@ -142,123 +199,56 @@ public class WorkplaceWindow {
         new Thread(() -> {
             try (PDDocument document = Loader.loadPDF(file)) {
                 PDFRenderer renderer = new PDFRenderer(document);
-                int pageCount = document.getNumberOfPages();
-                
-                Platform.runLater(() -> {
-                    VBox pageContainer = (VBox) pdfScrollPane.getContent();
-                    pageContainer.getChildren().clear(); 
-                    pageContainer.setStyle("-fx-background-color: #e0e4ef; -fx-padding: 50;");
-                });
+                Platform.runLater(() -> ((VBox) pdfScrollPane.getContent()).getChildren().clear());
 
-                for (int i = 0; i < pageCount; i++) {
+                for (int i = 0; i < document.getNumberOfPages(); i++) {
                     BufferedImage bim = renderer.renderImageWithDPI(i, 200);
                     Image fxImage = SwingFXUtils.toFXImage(bim, null);
-
                     Platform.runLater(() -> {
                         ImageView pageView = new ImageView(fxImage);
-                        pageView.setFitWidth(850); 
+                        pageView.setFitWidth(750);
                         pageView.setPreserveRatio(true);
-                        
-                        javafx.scene.effect.DropShadow shadow = new javafx.scene.effect.DropShadow();
-                        shadow.setColor(javafx.scene.paint.Color.rgb(0, 0, 0, 0.4));
-                        shadow.setRadius(20);
-                        shadow.setOffsetY(10);
-                        pageView.setEffect(shadow);
-
                         ((VBox) pdfScrollPane.getContent()).getChildren().add(pageView);
                     });
                 }
             } catch (IOException e) { e.printStackTrace(); }
         }).start();
     }
-
-    private void toggleMode(boolean isPdf) {
-        Platform.runLater(() -> {
-            pdfScrollPane.setVisible(isPdf);
-            pdfScrollPane.setManaged(isPdf);
-            if (editorContainer != null) {
-                editorContainer.setVisible(!isPdf);
-                editorContainer.setManaged(!isPdf);
-            }
-            editor.setVisible(!isPdf);
-            editor.setManaged(!isPdf);
-            if (contentStack != null) contentStack.requestLayout(); 
-        });
-    }
-
+   
     private void runBackgroundPDFProcess(File file, boolean shouldCorrect) {
         new Thread(() -> {
             try (PDDocument document = Loader.loadPDF(file)) { 
-                PDFTextStripper stripper = new PDFTextStripper();
-                stripper.setSortByPosition(true); 
-                String extractedText = stripper.getText(document);
+                String text = new PDFTextStripper().getText(document);
+                this.rawTextContent = shouldCorrect ? engine.performMagicCheck(text) : text;
                 Platform.runLater(() -> {
-                    String result = shouldCorrect ? engine.performMagicCheck(extractedText) : extractedText;
-                    editor.setText(result);
-                    updateCounts(result);
+                    updateEditorFlow(rawTextContent);
+                    updateCounts(rawTextContent);
                 });
             } catch (Exception e) { e.printStackTrace(); }
         }).start();
     }
-
-    @FXML
-    private void handleCheck() {
-        if (currentFile == null) return;
-        fileNameLabel.setText("✨ ENCHANTING " + currentFile.getName().toUpperCase() + "...");
-        new Thread(() -> {
-            try {
-                String textToProcess = editor.getText();
-                if (textToProcess == null || textToProcess.isEmpty()) {
-                    try (PDDocument document = Loader.loadPDF(currentFile)) {
-                        textToProcess = new PDFTextStripper().getText(document);
-                    }
-                }
-                String correctedText = engine.performMagicCheck(textToProcess);
-                Platform.runLater(() -> {
-                    toggleMode(false); 
-                    editor.setText(correctedText);
-                    editor.setStyle("-fx-font-family: 'Helvetica'; -fx-font-size: 15px; -fx-padding: 40;");
-                    updateCounts(correctedText);
-                });
-            } catch (Exception e) { e.printStackTrace(); }
-        }).start();
-    }
-
+   
     private void updateCounts(String text) {
         if (text == null) return;
-        String trimmed = text.trim();
-        int words = trimmed.isEmpty() ? 0 : trimmed.split("\\s+").length;
+        int words = text.trim().isEmpty() ? 0 : text.trim().split("\\s+").length;
         Platform.runLater(() -> {
             if (wordCountLabel != null) wordCountLabel.setText(words + " Words");
             if (charCountLabel != null) charCountLabel.setText(text.length() + " Characters");
         });
     }
 
+    private void updateEditorFlow(String text) {
+        editorFlow.getChildren().clear();
+        Text t = new Text(text);
+        t.setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 15px;");
+        editorFlow.getChildren().add(t);
+    }
+    
     private void loadPlainText(File file) {
-        new Thread(() -> {
-            try {
-                String content = Files.readString(file.toPath());
-                Platform.runLater(() -> {
-                    editor.setText(content);
-                    updateCounts(content);
-                });
-            } catch (IOException e) { e.printStackTrace(); }
-        }).start();
-    }
-
-    @FXML private void handleGoBack() {
-        ((Stage) fileNameLabel.getScene().getWindow()).close();
-    }
-
-    public void show(Stage stage, File file) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/spellbound/ui/WorkplaceView.fxml"));
-            Parent root = loader.load();
-            WorkplaceWindow controller = loader.getController();
-            controller.setupWorkplace(file, stage);
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception e) { e.printStackTrace(); }
+            this.rawTextContent = Files.readString(file.toPath());
+            updateEditorFlow(rawTextContent);
+            updateCounts(rawTextContent);
+        } catch (IOException e) { e.printStackTrace(); }
     }
 }
