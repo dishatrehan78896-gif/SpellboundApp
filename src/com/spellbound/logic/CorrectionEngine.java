@@ -6,14 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.common.PDRectangle;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.apache.pdfbox.pdmodel.font.Standard14Fonts;
-
 import com.spellbound.ui.WorkplaceWindow.DocSettings;
 
 public class CorrectionEngine {
@@ -29,32 +27,63 @@ public class CorrectionEngine {
         ENCHANTMENT_MAP.put("alot", "a lot");
         ENCHANTMENT_MAP.put("should of", "should have");
         ENCHANTMENT_MAP.put("could of", "could have");
-        ENCHANTMENT_MAP.put("irregardless", "regardless");
+        ENCHANTMENT_MAP.put("clint", "client");
     }
 
     public String performMagicCheck(String input) {
         if (input == null || input.isEmpty()) return "";
-        String processed = input;
-        processed = processed.replaceAll("(\\w)-\\n(\\w)", "$1$2"); 
-        processed = processed.replaceAll("(?i)\\bteh\\b", "the");
-        processed = processed.replaceAll("(?i)\\bcancled\\b", "cancelled");
-        processed = processed.replaceAll("(?i)\\bwritting\\b", "writing");
-        processed = processed.replaceAll("(?i)\\bclint\\b", "client");
-        processed = processed.replaceAll("(?<=[.,!?;])(?=[^\\s])", " ");
-        return processed;
+
+        String processed = fixGrammar(input);
+
+        for (Map.Entry<String, String> entry : ENCHANTMENT_MAP.entrySet()) {
+            String typo = entry.getKey();
+            String correction = entry.getValue();
+            processed = processed.replaceAll("(?i)\\b" + typo + "\\b", correction);
+        }
+
+        String[] lines = processed.split("\\r?\\n");
+        StringBuilder finalResult = new StringBuilder();
+        for (String line : lines) {
+            if (line.trim().isEmpty()) {
+                finalResult.append("\n");
+                continue;
+            }
+            String currentLine = fixArticles(line);
+            currentLine = currentLine.replaceAll("\\s+([.,!?;])", "$1"); 
+            finalResult.append(capitalizeSentences(currentLine)).append("\n");
+        }
+        
+        return finalResult.toString().trim();
+    }
+    public boolean isACorrectedWord(String word) {
+        if (word == null) return false;
+        String clean = word.trim().toLowerCase().replaceAll("[.,!?;]", "");
+        
+        if (clean.matches("is|are|the|an|a|i|don't|can't|receive|client|a lot|should have|could have")) {
+            return true;
+        }
+        for (String correctedValue : ENCHANTMENT_MAP.values()) {
+            if (correctedValue.toLowerCase().equals(clean)) {
+                return true;
+            }
+        }
+        
+        return false;
     }
 
-    // --- ARCHITECTED EXPORT ---
+    public boolean isMisspelled(String word) {
+        if (word == null) return false;
+        String clean = word.trim().toLowerCase().replaceAll("[.,!?;]", "");
+        
+        return ENCHANTMENT_MAP.containsKey(clean);
+    }
     public void exportCorrectedPDF(String text, String originalName, File targetFile, DocSettings settings) {
         try (PDDocument doc = new PDDocument()) {
             PDType1Font bodyFont = getFontByName(settings.font, false);
             PDType1Font headerFont = getFontByName(settings.font, true);
             
             float margin = settings.margin;
-            float startY = 750;
-            float currentY = startY;
-            float bottomLimit = 60;
-            int pageNum = 1;
+            float currentY = 750;
 
             PDPage page = new PDPage(PDRectangle.A4);
             doc.addPage(page);
@@ -74,187 +103,94 @@ public class CorrectionEngine {
                 float leading = isHeading ? 22 : 16;
                 PDType1Font activeFont = isHeading ? headerFont : bodyFont;
 
-                // Word Wrap Logic
                 String[] words = cleanPara.split(" ");
-                StringBuilder currentLine = new StringBuilder();
+                float currentX = margin;
 
                 for (String word : words) {
-                    // Wrap limit depends on margin
-                    int wrapLimit = (margin > 80) ? 65 : 85;
-
-                    if (currentLine.length() + word.length() > wrapLimit) {
-                        writeLine(contents, currentLine.toString(), activeFont, fontSize, margin, currentY, isHeading);
+                    String cleanWord = word.replaceAll("[.,!?;]", "");
+                    float wordWidth = activeFont.getStringWidth(word + " ") / 1000 * fontSize;
+                    
+                    if (currentX + wordWidth > (PDRectangle.A4.getWidth() - margin)) {
                         currentY -= leading;
-                        currentLine = new StringBuilder();
-
-                        if (currentY < bottomLimit) {
-                            if (settings.showPageNumbers) drawPageNumber(contents, pageNum, PDRectangle.A4);
+                        currentX = margin;
+                        if (currentY < 60) {
                             contents.close();
                             page = new PDPage(PDRectangle.A4);
                             doc.addPage(page);
                             contents = new PDPageContentStream(doc, page);
-                            currentY = startY;
-                            pageNum++;
+                            currentY = 750;
                         }
                     }
-                    currentLine.append(word).append(" ");
-                }
-                
-                writeLine(contents, currentLine.toString(), activeFont, fontSize, margin, currentY, isHeading);
-                currentY -= (leading + 4); // Extra spacing after paragraph
-            }
 
-            if (settings.showPageNumbers) drawPageNumber(contents, pageNum, PDRectangle.A4);
+                    if (isMisspelled(cleanWord)) {
+                        drawHighlight(contents, currentX, currentY, wordWidth, fontSize, 255, 243, 176);
+                    }
+
+                    writeWord(contents, word + " ", activeFont, fontSize, currentX, currentY, isHeading);
+                    currentX += wordWidth;
+                }
+                currentY -= (leading + 4); 
+            }
             contents.close();
             doc.save(targetFile);
         } catch (Exception e) { e.printStackTrace(); }
     }
 
-    private void writeLine(PDPageContentStream stream, String text, PDType1Font font, float size, float x, float y, boolean isHeading) throws IOException {
+    private void drawHighlight(PDPageContentStream stream, float x, float y, float width, float size, int r, int g, int b) throws IOException {
+        stream.saveGraphicsState();
+        stream.setNonStrokingColor(r/255f, g/255f, b/255f);
+        stream.addRect(x, y - 2, width, size + 2);
+        stream.fill();
+        stream.restoreGraphicsState();
+    }
+
+    private void writeWord(PDPageContentStream stream, String text, PDType1Font font, float size, float x, float y, boolean isHeading) throws IOException {
         stream.beginText();
         stream.setFont(font, size);
-        if (isHeading) {
-            stream.setNonStrokingColor(81/255f, 49/255f, 169/255f); // Purple for headings
-        } else {
-            stream.setNonStrokingColor(0, 0, 0); // Black for body
-        }
+        if (isHeading) stream.setNonStrokingColor(81/255f, 49/255f, 169/255f);
+        else stream.setNonStrokingColor(0, 0, 0);
         stream.newLineAtOffset(x, y);
-        stream.showText(text.trim());
+        stream.showText(text);
         stream.endText();
     }
 
     private PDType1Font getFontByName(String name, boolean bold) {
         if (name == null) return new PDType1Font(Standard14Fonts.FontName.HELVETICA);
         switch (name) {
-            case "Times-Roman": 
-                return new PDType1Font(bold ? Standard14Fonts.FontName.TIMES_BOLD : Standard14Fonts.FontName.TIMES_ROMAN);
-            case "Courier": 
-                return new PDType1Font(bold ? Standard14Fonts.FontName.COURIER_BOLD : Standard14Fonts.FontName.COURIER);
-            default: 
-                return new PDType1Font(bold ? Standard14Fonts.FontName.HELVETICA_BOLD : Standard14Fonts.FontName.HELVETICA);
+            case "Times-Roman": return new PDType1Font(bold ? Standard14Fonts.FontName.TIMES_BOLD : Standard14Fonts.FontName.TIMES_ROMAN);
+            case "Courier": return new PDType1Font(bold ? Standard14Fonts.FontName.COURIER_BOLD : Standard14Fonts.FontName.COURIER);
+            default: return new PDType1Font(bold ? Standard14Fonts.FontName.HELVETICA_BOLD : Standard14Fonts.FontName.HELVETICA);
         }
     }
 
-    private void drawPageNumber(PDPageContentStream stream, int num, PDRectangle rect) throws IOException {
-        stream.beginText();
-        stream.setFont(new PDType1Font(Standard14Fonts.FontName.HELVETICA), 9);
-        stream.setNonStrokingColor(150/255f, 150/255f, 150/255f);
-        stream.newLineAtOffset(rect.getWidth() / 2, 30);
-        stream.showText("- " + num + " -");
-        stream.endText();
-    }
-
     private boolean isUserHeading(String line, String[] highlights) {
-        if (highlights == null || line.length() > 100) return false; 
+        if (highlights == null) return false;
         for (String h : highlights) {
             if (!h.trim().isEmpty() && line.toLowerCase().contains(h.toLowerCase().trim())) return true;
         }
         return false;
     }
-    private String applyEnchantmentMap(String text) {
 
-    	for (Map.Entry<String, String> entry : ENCHANTMENT_MAP.entrySet()) {
+    private String fixArticles(String text) {
+        text = text.replaceAll("(?i)\\ba\\s+([aeiou])", "an $1");
+        text = text.replaceAll("(?i)\\ban\\s+([bcdfghjklmnpqrstvwxyz])", "a $1");
+        return text;
+    }
 
-    	// \\b ensures we don't change "intentional" inside "unintentional"
+    private String fixGrammar(String text) {
+        text = text.replaceAll("(?i)\\b(I|you|we|they)\\s+is\\b", "$1 are");
+        text = text.replaceAll("(?i)\\b(he|she|it|someone|everyone)\\s+are\\b", "$1 is");
+        return text;
+    }
 
-    	text = text.replaceAll("(?i)\\b" + entry.getKey() + "\\b", entry.getValue());
-
-    	}
-
-    	return text;
-
-    	}
-
-
-
-    	private String fixArticles(String text) {
-
-    	// Fixes "a apple" -> "an apple" and "an car" -> "a car"
-
-    	text = text.replaceAll("(?i)\\ba ([aeiou])", "an $1");
-
-    	text = text.replaceAll("(?i)\\ban ([bcdfghjklmnpqrstvwxyz])", "a $1");
-
-    	return text;
-
-    	}
-
-
-
-    	private String fixPunctuation(String text) {
-
-    	// Remove spaces BEFORE punctuation
-
-    	text = text.replaceAll("\\s+([,.!?;:])", "$1");
-
-    	// Ensure space AFTER punctuation if missing (except at end of string)
-
-    	text = text.replaceAll("([,.!?;:])(?=[a-zA-Z])", "$1 ");
-
-    	// Fix "Oxford Comma" style issues (e.g., ",," or " ,")
-
-    	text = text.replaceAll(",{2,}", ",");
-
-    	return text;
-
-    	}
-
-
-
-    	private String fixGrammar(String text) {
-
-    	// Fixes "I is" / "He are"
-
-    	text = text.replaceAll("(?i)\\b(I|you|we|they) is\\b", "$1 are");
-
-    	text = text.replaceAll("(?i)\\b(he|she|it|someone|everyone) are\\b", "$1 is");
-
-
-    	// Fixes "did not had" -> "did not have"
-
-    	text = text.replaceAll("(?i)\\bdid not (had|has)\\b", "did not have");
-
-
-    	// Fixes Double Negatives (e.g., "don't need no")
-
-    	text = text.replaceAll("(?i)\\bdon't need no\\b", "don't need any");
-
-
-    	return text;
-
-    	}
-
-
-
-
-    	private String capitalizeSentences(String text) {
-
-    	StringBuilder sb = new StringBuilder(text);
-
-    	// Matches start of string OR punctuation followed by space
-
-    	Pattern p = Pattern.compile("(^|[.!?]\\s+)([a-z])");
-
-    	Matcher m = p.matcher(sb);
-
-    	while (m.find()) {
-
-    	sb.replace(m.start(2), m.end(2), m.group(2).toUpperCase());
-
-    	}
-
-    	return sb.toString();
-
-    	}
-
-
-
-    	public boolean isMisspelled(String word) {
-
-    	return ENCHANTMENT_MAP.containsKey(word.toLowerCase());
-
-    	}
-
-    	}
-
-    // --- Rest of your grammar methods stay the same ---
+    private String capitalizeSentences(String text) {
+        if (text == null || text.isEmpty()) return text;
+        StringBuilder sb = new StringBuilder(text);
+        Pattern p = Pattern.compile("(?<=[.!?]\\s)([a-z])|(?<=^)([a-z])");
+        Matcher m = p.matcher(sb);
+        while (m.find()) {
+            sb.replace(m.start(), m.end(), m.group().toUpperCase());
+        }
+        return sb.toString();
+    }
+}
