@@ -27,9 +27,9 @@ import javafx.stage.Stage;
 
 public class WorkplaceWindow {
 
-    // Change: Using TextFlow for highlighting support without external JARs
+    
     @FXML private TextFlow editorFlow; 
-    @FXML private TextArea editor; // Keep hidden for raw input if needed, or remove if FXML is fully updated
+    @FXML private TextArea editor; 
     @FXML private VBox editorContainer;
     @FXML private Label fileNameLabel;
     @FXML private Label wordCountLabel; 
@@ -44,7 +44,7 @@ public class WorkplaceWindow {
 
     private CorrectionEngine engine = new CorrectionEngine();
     private File currentFile;
-    private String rawTextContent = ""; // Stores the unformatted text
+    private String rawTextContent = ""; 
 
     public static class DocSettings {
         public float margin = 72f;
@@ -69,13 +69,9 @@ public class WorkplaceWindow {
         if (editorFlow != null) editorFlow.getChildren().clear();
         toggleMode(false); 
     }
-
-    /**
-     * UPDATED: Magic Check now builds the TextFlow with GREEN highlights for corrections.
-     */
     @FXML
     private void handleCheck() {
-        // 1. Capture the text from the editor
+       
         String input = (editor != null && !editor.getText().isEmpty()) ? editor.getText() : rawTextContent;
         
         if (input == null || input.trim().isEmpty()) {
@@ -83,14 +79,13 @@ public class WorkplaceWindow {
             return;
         }
 
-        // 2. Run the correction engine
+        
         String corrected = engine.performMagicCheck(input);
         this.rawTextContent = corrected; 
 
         Platform.runLater(() -> {
-            // 3. Build the Green Highlight View
             editorFlow.getChildren().clear();
-            String[] words = corrected.split("\\s+"); // Split by any whitespace
+            String[] words = corrected.split("\\s+");
             
             for (String word : words) {
                 Text textNode = new Text(word + " ");
@@ -106,21 +101,20 @@ public class WorkplaceWindow {
                 editorFlow.getChildren().add(textNode);
             }
 
-            // 4. THE UI SWAP (Crucial Part)
-            // Hide the TextArea
+            
             editor.setVisible(false);
             editor.setManaged(false);
             
-            // Show the Magic ScrollPane and TextFlow
+            
             magicOverlay.setVisible(true);
             magicOverlay.setManaged(true);
-            magicOverlay.setOpacity(1.0); // Ensure it's fully opaque
+            magicOverlay.setOpacity(1.0); 
             
-            // Ensure the PDF view is hidden
+           
             pdfScrollPane.setVisible(false);
             pdfScrollPane.setManaged(false);
             
-            // Show the editor container
+           
             editorContainer.setVisible(true);
             editorContainer.setManaged(true);
 
@@ -144,7 +138,7 @@ public class WorkplaceWindow {
     @FXML
     private void handleSave() {
     	((VBox) pdfScrollPane.getContent()).getChildren().clear();
-    	System.gc(); // Suggest garbage collection to release file handles
+    	System.gc(); 
         if (rawTextContent.isEmpty()) return;
 
         DocSettings userChoices = getDocSettings();
@@ -153,7 +147,7 @@ public class WorkplaceWindow {
             String name = (currentFile != null) ? currentFile.getName().replace(".pdf", "") : "Untitled_Enchantment";
             File saveTarget = new File(baseDir, name + "_Architected.pdf");
 
-            // The Engine handles the BUTTER YELLOW highlighting internally in this call
+            
             engine.exportCorrectedPDF(rawTextContent, name, saveTarget, userChoices);
             
             fileNameLabel.setText("✨ ARCHITECTED: " + saveTarget.getName());
